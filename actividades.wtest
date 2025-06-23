@@ -1,0 +1,82 @@
+import actividades.*
+
+describe "tests copiados del profe xq me dio fiaca hacerlos yo" {
+  const trek1 = new SalidaDeTrekking(kilometrosDeSendero=100,diasDeSolPorAnio=130,idiomas=#{"ingles"})
+  const trek2 = new SalidaDeTrekking(kilometrosDeSendero=50,diasDeSolPorAnio=240,idiomas=#{"ingles"})
+  const trek3 = new SalidaDeTrekking(kilometrosDeSendero=250,diasDeSolPorAnio=130,idiomas=#{"ingles"})
+  const playa1 = new ViajeDePlaya(largoDeLaPlaya=1000,idiomas=#{"jeringozo"})
+  const playa2 = new ViajeDePlaya(largoDeLaPlaya=2000,idiomas=#{"esperanto"})
+  const gim1 = new ClaseDeGimnasia()
+  const roque = new SocioTranquilo(limiteDeActividades=2,edad=40,idiomas=#{"espaniol"})
+
+  method initialize() {
+    roque.registrarActividad(playa1)
+    roque.registrarActividad(playa2)
+  }
+
+  test "trek1 lleva 2 días" {
+    assert.equals(2, trek1.cuantosDiasLleva())
+  }
+  test "trek2 lleva 1 días" {
+    assert.equals(1, trek2.cuantosDiasLleva())
+  }
+  test "trek3 lleva 5 días" {
+    assert.equals(5, trek3.cuantosDiasLleva())
+  }
+
+  test "trek1 implica esfuerzo" {
+    assert.that(trek1.implicaEsfuerzo())
+  }
+
+  test "roque es adorador del sol" {
+    assert.that(roque.esAdoradorDelSol())
+  }
+
+  test "las activides esforzadas es solo el viaje de 2000 metros" {
+    assert.equals({playa2},roque.actividadesEsforzadas())
+  }
+
+  test "roque no puede hacer gim porque ya hizo sus 2 actividad máximas" {
+      assert.throwsExceptionWithMessage("Se ha alcanzado el limite de actividades para este socio.",{roque.registrarActividad(gim1)})
+  }
+}
+
+describe "test de libros"{
+    const pepe = new SocioTranquilo(limiteDeActividades=2,edad=40,idiomas=#{"ingles"})
+    const richard = new SocioTranquilo(limiteDeActividades=2,edad=40,idiomas=#{"ingles","espaniol","portugues"})
+    const tallerlit = new TallerLiterario()
+    const libro1 = new Libro(idiomas=#{"espaniol", "ingles"}, hojas = 1500, autor="pepe")
+
+    method initialize() {
+      tallerlit.aniadirLibro(libro1)
+  }
+    test"a pepe no se le recomienda el taller literario xq sabe 1 solo idioma"{
+      assert.notThat(tallerlit.esRecomendada(pepe))
+    }
+    test"a richard se le recomienda el taller literario xq sabe mas de 1 idioma"{
+      assert.that(tallerlit.esRecomendada(richard))
+    }
+
+    test "el taller implica esfuerzo porque hay un libro de muchas paginas" {
+      assert.that(tallerlit.implicaEsfuerzo())
+    }
+  }
+
+describe "test de implica esfuerzo del taller"{
+    const tallerlit = new TallerLiterario()
+    const libro1 = new Libro(idiomas=#{"espaniol", "ingles"}, hojas = 150, autor=#{"pepe"})
+    const libro2 = new Libro(idiomas=#{"ruso"}, hojas = 152, autor=#{"pepe"})
+
+    method initialize() {
+      tallerlit.aniadirLibro(libro1)
+      tallerlit.aniadirLibro(libro2)
+  }
+
+    test "el taller de libros implica esfuerzo xq hay 2 libros chicos del mismo autor" {
+      assert.that(tallerlit.implicaEsfuerzo()) // no se como hacer esto. el .sum da error y 
+    }
+
+    test "idiomas de los libros"{
+      assert.equals(3, tallerlit.idiomas())
+    }
+}
